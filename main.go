@@ -20,7 +20,7 @@ func main() {
 	router := app.NewRouter(quoteAnimeController)
 
 	server := http.Server{
-		Addr:    "localhost:3000",
+		Addr:    ":3000",
 		Handler: middleware.NewAuthMiddleware(router),
 	}
 
