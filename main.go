@@ -5,6 +5,7 @@ import (
 	"quote-anime-api/app"
 	"quote-anime-api/controller"
 	"quote-anime-api/helper"
+	"quote-anime-api/middleware"
 	"quote-anime-api/repository"
 	"quote-anime-api/service"
 )
@@ -20,7 +21,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	err := server.ListenAndServe()

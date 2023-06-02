@@ -9,7 +9,7 @@ import (
 )
 
 func NewDB() *sql.DB {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/go_rest_api")
+	db, err := sql.Open("mysql", "root:4kWJkVilqTYs1HjQ9DkC@tcp(containers-us-west-53.railway.app:5609)/railway")
 	helper.PanicIfError(err)
 
 	db.SetMaxIdleConns(5)
