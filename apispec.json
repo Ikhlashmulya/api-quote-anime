@@ -1,0 +1,193 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Quotes anime REST API",
+        "version": "2.0",
+        "description": "API Spec for Quotes anime REST API"
+    },
+    "servers": [
+        {
+            "url": "https://api-quote-anime-production.up.railway.app/api"
+        }
+    ],
+    "paths": {
+        "/quote": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "query data character name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success get quote anime",
+                        "content": {
+                            "application/json":{
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/quoteAnime"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example":{
+                                    "code": 200,
+                                    "status": "OK",
+                                    "data": [
+                                        {
+                                            "anime": "(Naruto)",
+                                            "character_name": "Naruto Uzumaki",
+                                            "quote": "Once you question your own belief, it's over."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "character name is not found",
+                        "content": {
+                            "application/json":{
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "code": 404,
+                                    "status": "NOT FOUND",
+                                    "data": "quotes not found"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        },
+        "/quote/random" : {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success get random quote anime",
+                        "content": {
+                            "application/json":{
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/quoteAnime"
+                                        }
+                                    }
+                                },
+                                "example":{
+                                    "code": 200,
+                                    "status": "OK",
+                                    "data": {
+                                        "anime": "(Naruto)",
+                                        "character_name": "Naruto Uzumaki",
+                                        "quote": "Once you question your own belief, it's over."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "in": "header",
+                "name": "X-API-KEY",
+                "type": "apiKey"
+            }
+        },
+        "schemas": {
+            "quoteAnime": {
+                "type": "object",
+                "properties": {
+                    "anime": {
+                        "type": "string"
+                    },
+                    "character_name": {
+                        "type": "string"
+                    },
+                    "quote": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "UnauthorizedError": {
+                "description": "API key is missing or invalid",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number"
+                                },
+                                "status": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "example": {
+                            "code": 401,
+                            "status": "UNAUTHORIZED"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
