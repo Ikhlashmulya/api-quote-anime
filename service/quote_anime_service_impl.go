@@ -22,6 +22,7 @@ func NewQuoteAnimeService(quoteAnimeRepository repository.QuoteAnimeRepository, 
 func (service *QuoteAnimeServiceImpl) FindByName(ctx context.Context, characterName string) []web.QuoteAnimeResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
+	defer tx.Commit()
 
 	if characterName == "" {
 		panic(exception.NewValidationError("query parameters needed ('query=....')"))
@@ -42,6 +43,7 @@ func (service *QuoteAnimeServiceImpl) FindByName(ctx context.Context, characterN
 func (service *QuoteAnimeServiceImpl) FindRandom(ctx context.Context) web.QuoteAnimeResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
+	defer tx.Commit()
 
 	id := rand.Intn(8000)
 
